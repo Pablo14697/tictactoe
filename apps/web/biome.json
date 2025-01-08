@@ -1,0 +1,30 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "assists": {
+    "actions": { "source": { "useSortedKeys": "on" } },
+    "enabled": true
+  },
+  "files": { "ignore": ["./dist"], "ignoreUnknown": false },
+  "formatter": { "enabled": true, "indentStyle": "space" },
+  "javascript": {
+    "formatter": { "quoteStyle": "single" },
+    "parser": { "unsafeParameterDecoratorsEnabled": true }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "useKeyWithClickEvents": { "level": "off" }
+      },
+      "correctness": {
+        "noUnusedImports": { "fix": "safe", "level": "error" },
+        "noUnusedVariables": { "fix": "safe", "level": "error" }
+      },
+      "nursery": {
+        "useSortedClasses": { "fix": "safe", "level": "error", "options": {} }
+      },
+      "recommended": true
+    }
+  },
+  "organizeImports": { "enabled": true }
+}

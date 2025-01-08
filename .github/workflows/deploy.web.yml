@@ -1,0 +1,69 @@
+name: Deploy Web to GitHub Pages
+
+on:
+  push:
+    branches:
+      - solution
+    paths:
+      - apps/web/**
+      - .github/workflows/deploy.web.yml
+
+env:
+  GITHUB_PAGES_BASE: ${{ github.event.repository.name }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Read Node.js version
+        run: |
+          path="apps/web"
+          raw_version=$(cat $path/.nvmrc | tr -d '\n' | awk '{$1=$1};1')
+          if [[ $raw_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "NODE_VERSION=$raw_version" >> $GITHUB_ENV
+          else
+            echo "Error: Invalid Node version in $path/.nvmrc"
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          cache-dependency-path: apps/web/yarn.lock
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          key: apps/web-node-${{ env.NODE_VERSION }}-${{ hashFiles(format('{0}/yarn.lock', matrix.path)) }}
+          path: apps/web/node_modules
+          restore-keys: apps/web-node-${{ env.NODE_VERSION }}-
+
+      - name: Install dependencies
+        run: yarn install
+        working-directory: apps/web
+
+      - name: Build
+        run: yarn build
+        working-directory: apps/web
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

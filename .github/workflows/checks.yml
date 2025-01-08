@@ -1,0 +1,60 @@
+name: Checks and Tests
+
+on: push
+
+jobs:
+  run-checks-and-tests:
+    name: Run Checks and Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - path: apps/web
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Detect preferred Node.js version
+        run: |
+          path=${{ matrix.path }}
+          raw_version=$(cat $path/.nvmrc | tr -d '\n' | awk '{$1=$1};1')
+          if [[ $raw_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "NODE_VERSION=$raw_version" >> $GITHUB_ENV
+          else
+            echo "Error: Invalid Node version in $path/.nvmrc"
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          cache-dependency-path: ${{ matrix.path }}/yarn.lock
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          key: ${{ matrix.path }}-node-${{ env.NODE_VERSION }}-${{ hashFiles(format('{0}/yarn.lock', matrix.path)) }}
+          path: ${{ matrix.path }}/node_modules
+          restore-keys: ${{ matrix.path }}-node-${{ env.NODE_VERSION }}-
+
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ${{ matrix.path }}
+
+      - name: Check Types
+        run: yarn check:types
+        working-directory: ${{ matrix.path }}
+
+      - name: Check Lint
+        run: yarn check:lint
+        working-directory: ${{ matrix.path }}
+
+      - name: Check Prettier
+        run: yarn check:prettier
+        working-directory: ${{ matrix.path }}
+
+      - name: Run Tests
+        run: yarn test
+        working-directory: ${{ matrix.path }}

@@ -1,0 +1,50 @@
+{
+  "author": "SquadUp Labs",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "description": "Tic Tac Toe",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.23.8",
+    "@biomejs/biome": "1.9.4",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^15.0.4",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "jsdom": "^24.0.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.13",
+    "vite-plugin-svgr": "^4.2.0",
+    "vitest": "^1.5.1"
+  },
+  "engines": {
+    "node": ">=18.19 <19",
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.22.0"
+  },
+  "name": "tictactoe",
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "check:all": "yarn check:types && yarn check:lint && yarn check:prettier",
+    "check:lint": "biome lint ./",
+    "check:prettier": "biome format ./",
+    "check:types": "tsc --pretty --noEmit",
+    "clean": "rm -rf node_modules/ dist/",
+    "dev": "vite",
+    "dev:reset": "yarn clean && yarn install && yarn check:all",
+    "fix:all": "yarn fix:lint && yarn fix:prettier",
+    "fix:lint": "biome lint --write ./",
+    "fix:prettier": "biome format --write ./",
+    "test": "vitest run"
+  },
+  "type": "module",
+  "version": "0.0.1"
+}
