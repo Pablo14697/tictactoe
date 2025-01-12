@@ -1,6 +1,6 @@
+import { GameOutcome } from '@customTypes/game.types';
 import { describe, expect, it } from 'vitest';
-import type { GameOutcome } from 'types/game.types';
-import { checkOutcome } from './game.util';
+import { checkGameResult } from './game.util';
 
 /*
 
@@ -21,28 +21,29 @@ Would be represented as: "XOXO_XXOX"
 
 const testCases: { outcome: GameOutcome; state: string }[] = [
   // Unresolved
-  { outcome: 'unresolved', state: '_________' },
-  { outcome: 'unresolved', state: 'X__O__X__' },
+  { outcome: GameOutcome.UNRESOLVED, state: '_________' },
+  { outcome: GameOutcome.UNRESOLVED, state: 'X__O__X__' },
 
   // X wins
-  { outcome: 'X', state: 'XXXOO____' },
-  { outcome: 'X', state: 'XO__XO__X' },
+  { outcome: GameOutcome.X, state: 'XXXOO____' },
+  { outcome: GameOutcome.X, state: 'XO__XO__X' },
 
   // O wins
-  { outcome: 'O', state: 'OOOXX___X' },
-  { outcome: 'O', state: 'OX__OX_XO' },
+  { outcome: GameOutcome.O, state: 'OOOXX___X' },
+  { outcome: GameOutcome.O, state: 'OX__OX_XO' },
 
   // Draws
-  { outcome: 'draw', state: 'XOXOXOOXO' },
+  { outcome: GameOutcome.DRAW, state: 'XXOOXXXOO' },
 ];
 
 describe('checkWinner', () => {
   for (const { outcome, state } of testCases) {
     const name = `Outcome should be ${outcome}`;
     it(name, async () => {
-      console.log(state);
+      const calculatedOutcome = checkGameResult(
+        state.split('').map((item) => (item === '_' ? null : item)),
+      ).outcome;
 
-      const calculatedOutcome = checkOutcome();
       expect(calculatedOutcome).toBe(outcome);
     });
   }

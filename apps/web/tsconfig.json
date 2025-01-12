@@ -16,7 +16,8 @@
       "@constants": ["./constants.ts"],
       "@pages/*": ["./components/pages/*"],
       "@shared/*": ["./components/shared/*"],
-      "@utils/*": ["./utils/*"]
+      "@utils/*": ["./utils/*"],
+      "@customTypes/*": ["./types/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
