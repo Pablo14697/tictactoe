@@ -1,3 +1,4 @@
+import { emptyGame } from '@constants';
 import { GameOutcome, type GameResult } from '@customTypes/game.types';
 
 const winningCombinations = [
@@ -17,25 +18,30 @@ const getWinningCombination = (
 ): number[] => {
   for (const combination of winningCombinations) {
     const [a, b, c] = combination;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+    if (board[a] !== '_' && board[a] === board[b] && board[a] === board[c]) {
       return combination;
     }
   }
   return [];
 };
 
-export const checkGameResult = (board): GameResult => {
-  const winningCombination = getWinningCombination(board, winningCombinations);
+export const checkGameResult = (board: string): GameResult => {
+  const boardArr = board.split('');
+
+  const winningCombination = getWinningCombination(
+    boardArr,
+    winningCombinations,
+  );
 
   if (winningCombination.length) {
-    const winner = board[winningCombination[0]];
+    const winner = boardArr[winningCombination[0]];
     return {
       outcome: winner === GameOutcome.X ? GameOutcome.X : GameOutcome.O,
       winningPositions: winningCombination,
     };
   }
 
-  if (board.every((cell) => !!cell)) {
+  if (boardArr.every((cell) => cell !== emptyGame)) {
     return {
       outcome: GameOutcome.DRAW,
     };

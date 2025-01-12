@@ -40,9 +40,7 @@ describe('checkWinner', () => {
   for (const { outcome, state } of testCases) {
     const name = `Outcome should be ${outcome}`;
     it(name, async () => {
-      const calculatedOutcome = checkGameResult(
-        state.split('').map((item) => (item === '_' ? null : item)),
-      ).outcome;
+      const calculatedOutcome = checkGameResult(state).outcome;
 
       expect(calculatedOutcome).toBe(outcome);
     });

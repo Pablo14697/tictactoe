@@ -1,4 +1,4 @@
-import { testIdCell, testIdGameStatus } from '@constants';
+import { emptyGame, testIdCell, testIdGameStatus } from '@constants';
 import {
   GameOutcome,
   GamePlayer,
@@ -9,14 +9,10 @@ import { SquareButton } from '@shared/square-button.component';
 import { checkGameResult } from '@utils/game.util';
 import { useState } from 'react';
 
-const INITIAL_TABLE = [null, null, null, null, null, null, null, null, null];
+const INITIAL_BOARD = '_________';
 
-const updateArrayAt = (i, value, arr) => {
-  const newArray = [...arr];
-
-  newArray[i] = value;
-
-  return newArray;
+const replaceAt = (str: string, index: number, replacement: string) => {
+  return str.substring(0, index) + replacement + str.substring(index + 1);
 };
 
 export const GamePage: React.FC = () => {
@@ -24,9 +20,42 @@ export const GamePage: React.FC = () => {
   const [result, setResult] = useState<GameResult>({
     outcome: GameOutcome.UNRESOLVED,
   });
-  const [game, setGame] = useState(INITIAL_TABLE);
+  const [board, setBoard] = useState(INITIAL_BOARD);
 
   const isGameFinished = result.outcome !== GameOutcome.UNRESOLVED;
+
+  const getResultText = () => {
+    if (result.outcome === GameOutcome.X || result.outcome === GameOutcome.O) {
+      return `Winner: ${result.outcome}`;
+    }
+
+    if (result.outcome === GameOutcome.DRAW) {
+      return "It's a Draw";
+    }
+
+    return `Next Turn: ${currentPlayer}`;
+  };
+
+  const onPlayerPlayed = (index: number) => {
+    const updatedBoard = replaceAt(board, index, currentPlayer);
+
+    const result = checkGameResult(updatedBoard);
+    setBoard(updatedBoard);
+
+    setCurrentPlayer(
+      currentPlayer === GamePlayer.X ? GamePlayer.O : GamePlayer.X,
+    );
+    setResult({
+      outcome: result.outcome,
+      winningPositions: result.winningPositions,
+    });
+  };
+
+  const onRestartGame = () => {
+    setBoard(INITIAL_BOARD);
+    setCurrentPlayer(GamePlayer.X);
+    setResult({ outcome: GameOutcome.UNRESOLVED });
+  };
 
   return (
     <div className="flex min-h-screen w-screen justify-center">
@@ -37,63 +66,30 @@ export const GamePage: React.FC = () => {
             TIC-TAC-TOE
           </h1>
           <div className="mb-[50px]" />
-          {(result.outcome === GameOutcome.X ||
-            result.outcome === GameOutcome.O) && (
-            <h3
-              className="text-[32px] leading-[38.73px] whitespace-nowrap"
-              data-testid={testIdGameStatus}
-            >
-              Winner: {result.outcome}
-            </h3>
-          )}
 
-          {result.outcome === GameOutcome.DRAW && (
-            <h3
-              className="text-[32px] leading-[38.73px] whitespace-nowrap"
-              data-testid={testIdGameStatus}
-            >
-              It's a Draw
-            </h3>
-          )}
+          <h3
+            className="text-[32px] leading-[38.73px] whitespace-nowrap"
+            data-testid={testIdGameStatus}
+          >
+            {getResultText()}
+          </h3>
 
-          {result.outcome === GameOutcome.UNRESOLVED && (
-            <h3
-              className="text-[32px] leading-[38.73px] whitespace-nowrap"
-              data-testid={testIdGameStatus}
-            >
-              Next Turn: {currentPlayer}
-            </h3>
-          )}
           <div className="mb-[40px]" />
 
           <div className="grid min-h-[310px] w-[310px] grid-cols-3 grid-rows-3 gap-[10px] rounded-[8px] bg-custom-gray p-[10px]">
-            {game.map((row, i) => (
+            {board.split('').map((row, index) => (
               <SquareButton
-                key={String(i) + Date.now()}
-                data-testid={testIdCell(i)}
+                key={String(index) + Date.now()}
+                data-testid={testIdCell(index)}
                 disabled={isGameFinished}
                 className={
-                  result.winningPositions?.includes(i)
+                  result.winningPositions?.includes(index)
                     ? 'text-custom-green'
                     : 'text-black'
                 }
-                onClick={() => {
-                  const updatedGame = updateArrayAt(i, currentPlayer, game);
-                  const result = checkGameResult(updatedGame);
-                  setGame(updatedGame);
-
-                  setCurrentPlayer(
-                    currentPlayer === GamePlayer.X
-                      ? GamePlayer.O
-                      : GamePlayer.X,
-                  );
-                  setResult({
-                    outcome: result.outcome,
-                    winningPositions: result.winningPositions,
-                  });
-                }}
+                onClick={() => onPlayerPlayed(index)}
               >
-                {row}
+                {row !== emptyGame ? row : ''}
               </SquareButton>
             ))}
           </div>
@@ -101,11 +97,7 @@ export const GamePage: React.FC = () => {
 
           <ActionButton
             className={isGameFinished ? 'bg-custom-green' : 'bg-custom-gray'}
-            onClick={() => {
-              setGame(INITIAL_TABLE);
-              setCurrentPlayer(GamePlayer.X);
-              setResult({ outcome: GameOutcome.UNRESOLVED });
-            }}
+            onClick={onRestartGame}
           >
             {isGameFinished ? 'Play Again' : 'Restart'}
           </ActionButton>
