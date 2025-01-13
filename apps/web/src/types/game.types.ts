@@ -1,6 +1,6 @@
 export enum GameMode {
-  MULTI = 'Multi',
-  SINGLE = 'Single',
+  MULTI = 'multiplayer',
+  CPU = 'cpu',
 }
 
 export enum GamePlayer {

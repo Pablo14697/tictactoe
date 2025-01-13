@@ -7,7 +7,7 @@ export const CellButton: React.FC<CellButtonProps> = (props) => {
   return (
     <button
       {...buttonProps}
-      className={`flex items-center justify-center rounded-[8px] px-[32px] py-[12px] font-bold text-[50px] leading-[38.73px] ${!disabled && 'hover:bg-custom-green-muted'} ${className}`}
+      className={`flex items-center justify-center rounded-2 px-8 py-3 font-bold text-2xl leading-[38.73px] ${!disabled && 'hover:bg-custom-green-muted'} ${className}`}
       disabled={disabled}
     >
       {children}
