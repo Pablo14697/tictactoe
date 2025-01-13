@@ -72,7 +72,6 @@ export const GamePage: React.FC = () => {
             onClickCell={onPlayerPlay}
             size={size}
           />
-          <div className="mb-12.5" />
 
           <div className="flex flex-col items-center">
             <h3
