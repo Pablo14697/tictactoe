@@ -1,6 +1,6 @@
+import { testIdActionButton, testIdCell, testIdGameStatus } from '@constants';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { testIdActionButton, testIdCell, testIdGameStatus } from '@constants';
 import { GamePage } from './game.page';
 
 type CellIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -30,9 +30,10 @@ describe('Tic-Tac-Toe Game', () => {
     { clicks: [0, 1, 'reset', 0], expected: 'Next Turn: O' },
   ];
 
-  for (const { clicks, expected } of games) {
-    it(`should display "${expected}" after clicks: ${JSON.stringify(
-      clicks,
-    )}`, async () => expect(playGame(clicks)).toBe(expected));
-  }
+  it.each(games)(
+    'should display $expected after clicks: $clicks',
+    async ({ clicks, expected }) => {
+      expect(playGame(clicks)).toBe(expected);
+    },
+  );
 });
