@@ -23,3 +23,9 @@ export interface GameResult {
   winningPositions: WinningCombination;
   errorMessage: string;
 }
+
+export interface GameHistory {
+  outcome: GameOutcome;
+  id: string;
+  gameMode: GameMode;
+}

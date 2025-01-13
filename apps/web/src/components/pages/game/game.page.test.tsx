@@ -11,6 +11,8 @@ vi.mock('@utils/generate-cpu-play.util', () => {
   };
 });
 
+vi.mock('react-router-dom');
+
 type CellIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type ResetButton = 'reset';
 type Clickable = CellIndex | ResetButton;

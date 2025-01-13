@@ -8,6 +8,7 @@ export default {
         'custom-gray': '#6e6e6e',
         'custom-green': '#66c85d',
         'custom-green-muted': '#cadbc9',
+        'custom-green-muted-33': '#cadbc933',
       },
       width: {
         board: '310px',
