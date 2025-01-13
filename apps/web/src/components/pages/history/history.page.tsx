@@ -33,7 +33,7 @@ export const HistoryPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((item, _index) => (
+                  {history.map((item) => (
                     <tr
                       className="hover:bg-custom-green-muted-33"
                       key={item.id}
