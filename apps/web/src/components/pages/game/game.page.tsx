@@ -1,15 +1,16 @@
 import { emptyGame, testIdCell, testIdGameStatus } from '@constants';
 
-import { useGameLogic } from '@hooks/useGameLogic';
+import { useGameLogic } from '@hooks/use-game-logic';
 import { ActionButton } from '@shared/action-button.component';
 import { CellButton } from '@shared/cell-button.component';
+import { getResultText } from '@utils/get-game-result.util';
 
 export const GamePage: React.FC = () => {
   const {
     board,
+    currentPlayer,
     isGameFinished,
     result,
-    getResultText,
     onPlayerPlay,
     onRestartGame,
   } = useGameLogic();
@@ -30,7 +31,7 @@ export const GamePage: React.FC = () => {
               className="whitespace-pre-wrap text-center text-[32px] leading-[38.73px]"
               data-testid={testIdGameStatus}
             >
-              {getResultText()}
+              {getResultText(result, currentPlayer)}
             </h3>
           </div>
 
