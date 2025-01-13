@@ -1,7 +1,13 @@
 import { emptyGame } from '@constants';
-import { GameOutcome, type GameResult } from '@customTypes/game.types';
+import {
+  GameOutcome,
+  type GameResult,
+  type WinningCombination,
+} from '@customTypes/game.types';
 
-const winningCombinations = [
+type WinningCombinations = WinningCombination[];
+
+const winningCombinations: WinningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -14,19 +20,16 @@ const winningCombinations = [
 
 const getWinningCombination = (
   board: string[],
-  winningCombinations: number[][],
+  winningCombinations: WinningCombinations,
 ): number[] => {
-  for (const combination of winningCombinations) {
-    const [a, b, c] = combination;
-    if (
-      board[a] !== emptyGame &&
-      board[a] === board[b] &&
-      board[a] === board[c]
-    ) {
-      return combination;
-    }
-  }
-  return [];
+  return (
+    winningCombinations.find(
+      ([a, b, c]) =>
+        board[a] !== emptyGame &&
+        board[a] === board[b] &&
+        board[a] === board[c],
+    ) || []
+  );
 };
 
 export const checkGameResult = (board: string): GameResult => {
@@ -42,7 +45,7 @@ export const checkGameResult = (board: string): GameResult => {
     };
   }
 
-  const winningCombination = getWinningCombination(
+  const winningCombination: WinningCombination = getWinningCombination(
     boardArr,
     winningCombinations,
   );

@@ -11,8 +11,10 @@ export enum GameOutcome {
   ERROR = 'error',
 }
 
+export type WinningCombination = number[];
+
 export interface GameResult {
   outcome: GameOutcome;
-  winningPositions: number[];
+  winningPositions: WinningCombination;
   errorMessage: string;
 }

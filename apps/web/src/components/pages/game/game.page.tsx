@@ -44,7 +44,7 @@ export const GamePage: React.FC = () => {
     return `Next Turn: ${currentPlayer}`;
   };
 
-  const onPlayerPlayed = (index: number) => {
+  const onPlayerPlay = (index: number) => {
     const updatedBoard = replaceAt(board, index, currentPlayer);
 
     const result = checkGameResult(updatedBoard);
@@ -103,7 +103,7 @@ export const GamePage: React.FC = () => {
                     ? 'text-custom-green'
                     : 'text-black'
                 }
-                onClick={() => onPlayerPlayed(index)}
+                onClick={() => onPlayerPlay(index)}
               >
                 {row !== emptyGame ? row : ''}
               </SquareButton>
