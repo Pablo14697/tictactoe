@@ -8,9 +8,11 @@ export enum GameOutcome {
   O = 'O',
   DRAW = 'draw',
   UNRESOLVED = 'unresolved',
+  ERROR = 'error',
 }
 
 export interface GameResult {
   outcome: GameOutcome;
-  winningPositions?: number[];
+  winningPositions: number[];
+  errorMessage: string;
 }

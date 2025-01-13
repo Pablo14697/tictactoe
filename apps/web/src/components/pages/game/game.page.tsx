@@ -19,12 +19,20 @@ export const GamePage: React.FC = () => {
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(GamePlayer.X);
   const [result, setResult] = useState<GameResult>({
     outcome: GameOutcome.UNRESOLVED,
+    winningPositions: [],
+    errorMessage: '',
   });
   const [board, setBoard] = useState(INITIAL_BOARD);
 
-  const isGameFinished = result.outcome !== GameOutcome.UNRESOLVED;
+  const isGameFinished =
+    result.outcome !== GameOutcome.UNRESOLVED &&
+    result.outcome !== GameOutcome.ERROR;
 
   const getResultText = () => {
+    if (result.outcome === GameOutcome.ERROR) {
+      return `Error: ${result.errorMessage}`;
+    }
+
     if (result.outcome === GameOutcome.X || result.outcome === GameOutcome.O) {
       return `Winner: ${result.outcome}`;
     }
@@ -48,35 +56,43 @@ export const GamePage: React.FC = () => {
     setResult({
       outcome: result.outcome,
       winningPositions: result.winningPositions,
+      errorMessage: result.errorMessage,
     });
   };
 
   const onRestartGame = () => {
     setBoard(INITIAL_BOARD);
     setCurrentPlayer(GamePlayer.X);
-    setResult({ outcome: GameOutcome.UNRESOLVED });
+    setResult({
+      outcome: GameOutcome.UNRESOLVED,
+      winningPositions: [],
+      errorMessage: '',
+    });
   };
 
   return (
     <div className="flex min-h-screen w-screen justify-center">
-      <div className="no-scrollbar·overflow-y-scroll·bg-white">
-        <div className="flex·flex-col·items-center·bg-white·px-[52px]">
+      <div className="no-scrollbar overflow-y-scroll bg-white">
+        <div className="flex flex-col items-center px-[52px]">
           <div className="mt-[40px]" />
-          <h1 className="whitespace-nowrap·font-bold·text-[50px]·leading-[60.51px]">
+          <h1 className="whitespace-nowrap font-bold text-[50px] leading-[60.51px]">
             TIC-TAC-TOE
           </h1>
+
           <div className="mb-[50px]" />
 
-          <h3
-            className="whitespace-nowrap·text-[32px]·leading-[38.73px]"
-            data-testid={testIdGameStatus}
-          >
-            {getResultText()}
-          </h3>
+          <div className="w-board">
+            <h3
+              className="whitespace-pre-wrap text-[32px] leading-[38.73px] text-center"
+              data-testid={testIdGameStatus}
+            >
+              {getResultText()}
+            </h3>
+          </div>
 
           <div className="mb-[40px]" />
 
-          <div className="grid min-h-[310px] w-[310px] grid-cols-3 grid-rows-3 gap-[10px] rounded-[8px] bg-custom-gray p-[10px]">
+          <div className="grid h-board w-board grid-cols-3 grid-rows-3 gap-[10px] rounded-[8px] bg-custom-gray p-[10px]">
             {board.split('').map((row, index) => (
               <SquareButton
                 key={String(index) + Date.now()}
@@ -93,6 +109,7 @@ export const GamePage: React.FC = () => {
               </SquareButton>
             ))}
           </div>
+
           <div className="mb-[50px]" />
 
           <ActionButton

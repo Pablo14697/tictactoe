@@ -28,6 +28,16 @@ const getWinningCombination = (
 export const checkGameResult = (board: string): GameResult => {
   const boardArr = board.split('');
 
+  const xCounter = boardArr.filter((item) => item === GameOutcome.X).length;
+  const oCounter = boardArr.filter((item) => item === GameOutcome.O).length;
+  if (oCounter > xCounter) {
+    return {
+      outcome: GameOutcome.ERROR,
+      winningPositions: [],
+      errorMessage: 'more O amount than X is not a valid combination',
+    };
+  }
+
   const winningCombination = getWinningCombination(
     boardArr,
     winningCombinations,
@@ -38,16 +48,21 @@ export const checkGameResult = (board: string): GameResult => {
     return {
       outcome: winner === GameOutcome.X ? GameOutcome.X : GameOutcome.O,
       winningPositions: winningCombination,
+      errorMessage: '',
     };
   }
 
   if (boardArr.every((cell) => cell !== emptyGame)) {
     return {
       outcome: GameOutcome.DRAW,
+      winningPositions: [],
+      errorMessage: '',
     };
   }
 
   return {
     outcome: GameOutcome.UNRESOLVED,
+    winningPositions: [],
+    errorMessage: '',
   };
 };
