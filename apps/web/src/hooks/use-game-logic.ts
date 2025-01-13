@@ -71,7 +71,10 @@ export const useGameLogic = (): GameLogic => {
 
     const parcialResult = checkResult(boardUpdatedByHuman);
 
-    if (parcialResult.outcome === GameOutcome.X) {
+    if (
+      parcialResult.outcome !== GameOutcome.UNRESOLVED &&
+      parcialResult.outcome !== GameOutcome.ERROR
+    ) {
       return;
     }
 
