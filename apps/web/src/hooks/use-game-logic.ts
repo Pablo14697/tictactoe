@@ -10,6 +10,7 @@ import { checkGameResult } from '@utils/check-game-result.util';
 import { generateCpuPlay } from '@utils/generate-cpu-play.util';
 import { useState } from 'react';
 
+const initialSize = 3;
 const initialPlayer = GamePlayer.X;
 const initialResult = {
   outcome: GameOutcome.UNRESOLVED,
@@ -38,8 +39,8 @@ export const useGameLogic = (): GameLogic => {
   const [mode, setMode] = useState<GameMode>(GameMode.MULTI);
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(initialPlayer);
   const [result, setResult] = useState<GameResult>(initialResult);
-  const [size, setSize] = useState(3);
-  const [board, setBoard] = useState('_'.repeat(size ** 2));
+  const [size, setSize] = useState(initialSize);
+  const [board, setBoard] = useState('_'.repeat(initialSize ** 2));
 
   const isGameFinished = (result: GameResult) =>
     result.outcome !== GameOutcome.UNRESOLVED &&
