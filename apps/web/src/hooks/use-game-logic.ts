@@ -57,19 +57,24 @@ export const useGameLogic = (): GameLogic => {
     return board;
   };
 
-  const checkResult = (board: string) => {
+  const checkResult = (board: string): GameResult => {
     const result = checkGameResult(board);
-    setBoard(board);
 
-    setResult({
-      outcome: result.outcome,
-      winningPositions: result.winningPositions,
-      errorMessage: result.errorMessage,
-    });
+    setBoard(board);
+    setResult(result);
+
+    return result;
   };
 
   const handleCpuMode = async (index: number) => {
     const boardUpdatedByHuman = playHuman(index, GamePlayer.X);
+
+    const parcialResult = checkResult(boardUpdatedByHuman);
+
+    if (parcialResult.outcome === GameOutcome.X) {
+      return;
+    }
+
     const boardUpdatedByCpu = playCpu(boardUpdatedByHuman);
 
     checkResult(boardUpdatedByCpu);
