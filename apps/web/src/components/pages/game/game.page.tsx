@@ -4,6 +4,7 @@ import { GameMode } from '@customTypes/game.types';
 import { useGameLogic } from '@hooks/use-game-logic';
 import { ActionButton } from '@shared/action-button.component';
 import { Board } from '@shared/board.component';
+import { Link } from '@shared/link.component';
 import { getResultText } from '@utils/get-game-result.util';
 
 export const GamePage: React.FC = () => {
@@ -77,6 +78,12 @@ export const GamePage: React.FC = () => {
           >
             {isGameFinished ? 'Play Again' : 'Restart'}
           </ActionButton>
+          <div className="mb-2" />
+
+          <Link variant="md" to="/history">
+            History
+          </Link>
+
           <div className="mb-12.5" />
         </div>
       </div>

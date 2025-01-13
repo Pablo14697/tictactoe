@@ -18,6 +18,7 @@
       "@hooks/*": ["./hooks/*"],
       "@pages/*": ["./components/pages/*"],
       "@shared/*": ["./components/shared/*"],
+      "@store/*": ["./store/*"],
       "@utils/*": ["./utils/*"]
     },
     "resolveJsonModule": true,

@@ -5,6 +5,7 @@ import {
   GamePlayer,
   type GameResult,
 } from '@customTypes/game.types';
+import { storeHistory } from '@store/history.store';
 import { checkGameResult } from '@utils/check-game-result.util';
 import { generateCpuPlay } from '@utils/generate-cpu-play.util';
 import { useState } from 'react';
@@ -39,7 +40,7 @@ export const useGameLogic = (): GameLogic => {
   const [result, setResult] = useState<GameResult>(initialResult);
   const [board, setBoard] = useState(initialBoard);
 
-  const isGameFinished =
+  const isGameFinished = (result: GameResult) =>
     result.outcome !== GameOutcome.UNRESOLVED &&
     result.outcome !== GameOutcome.ERROR;
 
@@ -63,18 +64,19 @@ export const useGameLogic = (): GameLogic => {
     setBoard(board);
     setResult(result);
 
+    if (isGameFinished(result)) {
+      storeHistory(result, mode);
+    }
+
     return result;
   };
 
   const handleCpuMode = async (index: number) => {
     const boardUpdatedByHuman = playHuman(index, GamePlayer.X);
 
-    const parcialResult = checkResult(boardUpdatedByHuman);
+    const partialResult = checkResult(boardUpdatedByHuman);
 
-    if (
-      parcialResult.outcome !== GameOutcome.UNRESOLVED &&
-      parcialResult.outcome !== GameOutcome.ERROR
-    ) {
+    if (isGameFinished(partialResult)) {
       return;
     }
 
@@ -102,7 +104,11 @@ export const useGameLogic = (): GameLogic => {
     if (isAFilledCell) {
       return;
     }
-    if (isGameFinished) return;
+
+    if (isGameFinished(result)) {
+      return;
+    }
+
     const modeHandler = modeHandlers[mode];
     if (modeHandler) {
       modeHandler(index);
@@ -121,7 +127,7 @@ export const useGameLogic = (): GameLogic => {
     currentPlayer,
     result,
     board,
-    isGameFinished,
+    isGameFinished: isGameFinished(result),
     onPlayerPlay,
     onRestartGame,
   };
