@@ -1,4 +1,4 @@
-import { testIdGameStatus } from '@constants';
+import { testIdGameStatus, testIdSizeStatus } from '@constants';
 import { GameMode } from '@customTypes/game.types';
 
 import { useGameLogic } from '@hooks/use-game-logic';
@@ -10,6 +10,8 @@ import { getResultText } from '@utils/get-game-result.util';
 export const GamePage: React.FC = () => {
   const {
     board,
+    size,
+    setSize,
     mode,
     setMode,
     currentPlayer,
@@ -27,13 +29,14 @@ export const GamePage: React.FC = () => {
           <h1 className="whitespace-nowrap font-bold text-2xl leading-[60.51px]">
             TIC-TAC-TOE
           </h1>
+
           <div className="mb-5" />
           <div className="flex w-board justify-center gap-1">
             <ActionButton
               className={`px-3 py-0 font-normal text-base ${mode === GameMode.MULTI ? 'bg-custom-green' : 'bg-custom-gray'}`}
               onClick={() => {
                 setMode(GameMode.MULTI);
-                onRestartGame();
+                onRestartGame(size);
               }}
               name={GameMode.MULTI}
             >
@@ -43,7 +46,7 @@ export const GamePage: React.FC = () => {
               className={`px-3 py-0 font-normal text-base ${mode === GameMode.CPU ? 'bg-custom-green' : 'bg-custom-gray'}`}
               onClick={() => {
                 setMode(GameMode.CPU);
-                onRestartGame();
+                onRestartGame(size);
               }}
               name={GameMode.CPU}
             >
@@ -67,13 +70,48 @@ export const GamePage: React.FC = () => {
             isGameFinished={isGameFinished}
             result={result}
             onClickCell={onPlayerPlay}
+            size={size}
           />
-
           <div className="mb-12.5" />
+
+          <div className="flex flex-col items-center">
+            <h3
+              className="whitespace-pre-wrap text-center text-base leading-[38.73px]"
+              data-testid={testIdSizeStatus}
+            >
+              Matrix size: {size}
+            </h3>
+            <div className="flex gap-2">
+              <ActionButton
+                className={'h-10 w-12 bg-custom-gray font-normal text-base'}
+                onClick={() => {
+                  const sizeDecreased = size === 2 ? size : size - 1;
+
+                  setSize(sizeDecreased);
+                  onRestartGame(sizeDecreased);
+                }}
+                name={'size-decreaser'}
+              >
+                -
+              </ActionButton>
+              <ActionButton
+                className={'h-10 w-12 bg-custom-gray font-normal text-base'}
+                onClick={() => {
+                  setSize(size + 1);
+                  onRestartGame(size + 1);
+                }}
+                name={'size-increaser'}
+              >
+                +
+              </ActionButton>
+            </div>
+          </div>
+
+          <div className="mb-4" />
 
           <ActionButton
             className={`px-8 py-3 text-xl ${isGameFinished ? 'bg-custom-green' : 'bg-custom-gray'}`}
-            onClick={onRestartGame}
+            onClick={() => onRestartGame(size)}
             name="reset"
           >
             {isGameFinished ? 'Play Again' : 'Restart'}

@@ -1,4 +1,9 @@
-import { testIdActionButton, testIdCell, testIdGameStatus } from '@constants';
+import {
+  testIdActionButton,
+  testIdCell,
+  testIdGameStatus,
+  testIdSizeStatus,
+} from '@constants';
 import { GamePage } from '@pages/game/game.page';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
@@ -77,4 +82,29 @@ describe('Tic-Tac-Toe Game', () => {
       expect(screen.getByTestId(testIdGameStatus)?.textContent).toBe(expected);
     },
   );
+
+  it('should display matrix size of 3 initially', async () => {
+    render(<GamePage />);
+
+    expect(screen.getByTestId(testIdSizeStatus)?.textContent).toBe(
+      'Matrix size: 3',
+    );
+  });
+
+  it('should size handler work properly', async () => {
+    render(<GamePage />);
+
+    fireEvent.click(screen.getByTestId('size-decreaser-action-button'));
+
+    expect(screen.getByTestId(testIdSizeStatus)?.textContent).toBe(
+      'Matrix size: 2',
+    );
+
+    fireEvent.click(screen.getByTestId('size-increaser-action-button'));
+    fireEvent.click(screen.getByTestId('size-increaser-action-button'));
+
+    expect(screen.getByTestId(testIdSizeStatus)?.textContent).toBe(
+      'Matrix size: 4',
+    );
+  });
 });

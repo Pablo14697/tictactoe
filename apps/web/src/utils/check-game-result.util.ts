@@ -4,35 +4,30 @@ import {
   type GameResult,
   type WinningCombination,
 } from '@customTypes/game.types';
+import { createWinningCombinationMatrix } from './matrix.util';
 
 type WinningCombinations = WinningCombination[];
-
-const winningCombinations: WinningCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
 
 const getWinningCombination = (
   board: string[],
   winningCombinations: WinningCombinations,
 ): number[] => {
   return (
-    winningCombinations.find(
-      ([a, b, c]) =>
-        board[a] !== emptyGame &&
-        board[a] === board[b] &&
-        board[a] === board[c],
-    ) || []
+    winningCombinations.find((combination) => {
+      const firstValue = combination[0];
+
+      return combination.every(
+        (cur) =>
+          board[firstValue] !== emptyGame && board[firstValue] === board[cur],
+      );
+    }) || []
   );
 };
 
-export const checkGameResult = (board: string): GameResult => {
+export const checkGameResult = (board: string, size: number): GameResult => {
+  const winningCombinations: WinningCombinations =
+    createWinningCombinationMatrix(size);
+
   const boardArr = board.split('');
 
   const xCounter = boardArr.filter((item) => item === GameOutcome.X).length;

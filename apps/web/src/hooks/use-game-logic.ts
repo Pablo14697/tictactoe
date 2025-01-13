@@ -10,7 +10,6 @@ import { checkGameResult } from '@utils/check-game-result.util';
 import { generateCpuPlay } from '@utils/generate-cpu-play.util';
 import { useState } from 'react';
 
-const initialBoard = '_'.repeat(9);
 const initialPlayer = GamePlayer.X;
 const initialResult = {
   outcome: GameOutcome.UNRESOLVED,
@@ -20,13 +19,15 @@ const initialResult = {
 
 export interface GameLogic {
   mode: GameMode;
+  size: number;
+  setSize: React.Dispatch<React.SetStateAction<number>>;
   setMode: React.Dispatch<React.SetStateAction<GameMode>>;
   currentPlayer: GamePlayer;
   result: GameResult;
   board: string;
   isGameFinished: boolean;
   onPlayerPlay: (index: number) => void;
-  onRestartGame: () => void;
+  onRestartGame: (size: number) => void;
 }
 
 const replaceAt = (str: string, index: number, replacement: string) => {
@@ -35,10 +36,10 @@ const replaceAt = (str: string, index: number, replacement: string) => {
 
 export const useGameLogic = (): GameLogic => {
   const [mode, setMode] = useState<GameMode>(GameMode.MULTI);
-
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(initialPlayer);
   const [result, setResult] = useState<GameResult>(initialResult);
-  const [board, setBoard] = useState(initialBoard);
+  const [size, setSize] = useState(3);
+  const [board, setBoard] = useState('_'.repeat(size ** 2));
 
   const isGameFinished = (result: GameResult) =>
     result.outcome !== GameOutcome.UNRESOLVED &&
@@ -59,7 +60,7 @@ export const useGameLogic = (): GameLogic => {
   };
 
   const checkResult = (board: string): GameResult => {
-    const result = checkGameResult(board);
+    const result = checkGameResult(board, size);
 
     setBoard(board);
     setResult(result);
@@ -115,14 +116,16 @@ export const useGameLogic = (): GameLogic => {
     }
   };
 
-  const onRestartGame = () => {
-    setBoard(initialBoard);
+  const onRestartGame = (size: number) => {
+    setBoard('_'.repeat(size ** 2));
     setCurrentPlayer(initialPlayer);
     setResult(initialResult);
   };
 
   return {
     mode,
+    size,
+    setSize,
     setMode,
     currentPlayer,
     result,

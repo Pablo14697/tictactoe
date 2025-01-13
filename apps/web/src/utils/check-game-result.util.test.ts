@@ -89,7 +89,7 @@ describe('checkGameResult', () => {
   it.each(testCases)(
     'Outcome should be $outcome for state $state',
     ({ outcome, state, winningPositions, errorMessage }) => {
-      const result = checkGameResult(state);
+      const result = checkGameResult(state, 3);
 
       expect(result.outcome).toBe(outcome);
       expect(result.winningPositions).toStrictEqual(winningPositions);

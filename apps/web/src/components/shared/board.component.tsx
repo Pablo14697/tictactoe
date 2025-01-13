@@ -7,6 +7,7 @@ interface BoardProps {
   isGameFinished: boolean;
   result: GameResult;
   onClickCell: (index: number) => void;
+  size: number;
 }
 
 export const Board = ({
@@ -14,8 +15,16 @@ export const Board = ({
   isGameFinished,
   result,
   onClickCell,
+  size,
 }: BoardProps) => (
-  <div className="grid h-board w-board grid-cols-3 grid-rows-3 gap-2.5 rounded-2 bg-custom-gray p-2.5">
+  <div
+    className={'h-fit w-fit gap-2.5 rounded-2 bg-custom-gray p-2.5'}
+    style={{
+      display: 'grid',
+      gridTemplateColumns: `repeat(${size}, minmax(60px, 90px))`,
+      gridTemplateRows: `repeat(${size}, minmax(60px, 90px))`,
+    }}
+  >
     {board.split('').map((row, index) => (
       <CellButton
         key={String(index) + Date.now()}
