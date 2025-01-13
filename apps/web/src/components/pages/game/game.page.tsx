@@ -1,74 +1,18 @@
 import { emptyGame, testIdCell, testIdGameStatus } from '@constants';
-import {
-  GameOutcome,
-  GamePlayer,
-  type GameResult,
-} from '@customTypes/game.types';
+
+import { useGameLogic } from '@hooks/useGameLogic';
 import { ActionButton } from '@shared/action-button.component';
-import { SquareButton } from '@shared/square-button.component';
-import { checkGameResult } from '@utils/game.util';
-import { useState } from 'react';
-
-const initialBoard = '_________';
-
-const replaceAt = (str: string, index: number, replacement: string) => {
-  return str.substring(0, index) + replacement + str.substring(index + 1);
-};
+import { CellButton } from '@shared/cell-button.component';
 
 export const GamePage: React.FC = () => {
-  const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(GamePlayer.X);
-  const [result, setResult] = useState<GameResult>({
-    outcome: GameOutcome.UNRESOLVED,
-    winningPositions: [],
-    errorMessage: '',
-  });
-  const [board, setBoard] = useState(initialBoard);
-
-  const isGameFinished =
-    result.outcome !== GameOutcome.UNRESOLVED &&
-    result.outcome !== GameOutcome.ERROR;
-
-  const getResultText = () => {
-    if (result.outcome === GameOutcome.ERROR) {
-      return `Error: ${result.errorMessage}`;
-    }
-
-    if (result.outcome === GameOutcome.X || result.outcome === GameOutcome.O) {
-      return `Winner: ${result.outcome}`;
-    }
-
-    if (result.outcome === GameOutcome.DRAW) {
-      return "It's a Draw";
-    }
-
-    return `Next Turn: ${currentPlayer}`;
-  };
-
-  const onPlayerPlay = (index: number) => {
-    const updatedBoard = replaceAt(board, index, currentPlayer);
-
-    const result = checkGameResult(updatedBoard);
-    setBoard(updatedBoard);
-
-    setCurrentPlayer(
-      currentPlayer === GamePlayer.X ? GamePlayer.O : GamePlayer.X,
-    );
-    setResult({
-      outcome: result.outcome,
-      winningPositions: result.winningPositions,
-      errorMessage: result.errorMessage,
-    });
-  };
-
-  const onRestartGame = () => {
-    setBoard(initialBoard);
-    setCurrentPlayer(GamePlayer.X);
-    setResult({
-      outcome: GameOutcome.UNRESOLVED,
-      winningPositions: [],
-      errorMessage: '',
-    });
-  };
+  const {
+    board,
+    isGameFinished,
+    result,
+    getResultText,
+    onPlayerPlay,
+    onRestartGame,
+  } = useGameLogic();
 
   return (
     <div className="flex min-h-screen w-screen justify-center">
@@ -94,19 +38,21 @@ export const GamePage: React.FC = () => {
 
           <div className="grid h-board w-board grid-cols-3 grid-rows-3 gap-[10px] rounded-[8px] bg-custom-gray p-[10px]">
             {board.split('').map((row, index) => (
-              <SquareButton
+              <CellButton
                 key={String(index) + Date.now()}
                 data-testid={testIdCell(index)}
                 disabled={isGameFinished}
-                className={
-                  result.winningPositions?.includes(index)
-                    ? 'text-custom-green'
-                    : 'text-black'
-                }
+                className={`
+                  ${row === emptyGame || isGameFinished ? ' bg-white' : 'bg-custom-green-muted'}
+                  ${
+                    result.winningPositions?.includes(index)
+                      ? 'text-custom-green'
+                      : 'text-black'
+                  }`}
                 onClick={() => onPlayerPlay(index)}
               >
-                {row !== emptyGame ? row : ''}
-              </SquareButton>
+                {row === emptyGame ? '' : row}
+              </CellButton>
             ))}
           </div>
 

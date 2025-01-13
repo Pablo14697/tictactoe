@@ -15,6 +15,7 @@
     "paths": {
       "@constants": ["./constants.ts"],
       "@customTypes/*": ["./types/*"],
+      "@hooks/*": ["./hooks/*"],
       "@pages/*": ["./components/pages/*"],
       "@shared/*": ["./components/shared/*"],
       "@utils/*": ["./utils/*"]

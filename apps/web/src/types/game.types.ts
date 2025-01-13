@@ -1,3 +1,8 @@
+export enum GameMode {
+  MULTI = 'Multi',
+  SINGLE = 'Single',
+}
+
 export enum GamePlayer {
   X = 'X',
   O = 'O',
