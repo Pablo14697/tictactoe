@@ -1,9 +1,9 @@
-import { emptyGame, testIdCell, testIdGameStatus } from '@constants';
+import { testIdGameStatus } from '@constants';
 import { GameMode } from '@customTypes/game.types';
 
 import { useGameLogic } from '@hooks/use-game-logic';
 import { ActionButton } from '@shared/action-button.component';
-import { CellButton } from '@shared/cell-button.component';
+import { Board } from '@shared/board.component';
 import { getResultText } from '@utils/get-game-result.util';
 
 export const GamePage: React.FC = () => {
@@ -34,8 +34,9 @@ export const GamePage: React.FC = () => {
                 setMode(GameMode.MULTI);
                 onRestartGame();
               }}
+              name={GameMode.MULTI}
             >
-              Multijugador
+              Multiplayer
             </ActionButton>
             <ActionButton
               className={`px-3 py-0 font-normal text-base ${mode === GameMode.CPU ? 'bg-custom-green' : 'bg-custom-gray'}`}
@@ -43,8 +44,9 @@ export const GamePage: React.FC = () => {
                 setMode(GameMode.CPU);
                 onRestartGame();
               }}
+              name={GameMode.CPU}
             >
-              Contra la CPU
+              CPU
             </ActionButton>
           </div>
           <div className="mb-5" />
@@ -59,31 +61,19 @@ export const GamePage: React.FC = () => {
 
           <div className="mb-10" />
 
-          <div className="grid h-board w-board grid-cols-3 grid-rows-3 gap-2.5 rounded-2 bg-custom-gray p-2.5">
-            {board.split('').map((row, index) => (
-              <CellButton
-                key={String(index) + Date.now()}
-                data-testid={testIdCell(index)}
-                disabled={isGameFinished}
-                className={`
-                  ${row === emptyGame || isGameFinished ? ' bg-white' : 'bg-custom-green-muted'}
-                  ${
-                    result.winningPositions?.includes(index)
-                      ? 'text-custom-green'
-                      : 'text-black'
-                  }`}
-                onClick={() => onPlayerPlay(index)}
-              >
-                {row === emptyGame ? '' : row}
-              </CellButton>
-            ))}
-          </div>
+          <Board
+            board={board}
+            isGameFinished={isGameFinished}
+            result={result}
+            onClickCell={onPlayerPlay}
+          />
 
           <div className="mb-12.5" />
 
           <ActionButton
             className={`px-8 py-3 text-xl ${isGameFinished ? 'bg-custom-green' : 'bg-custom-gray'}`}
             onClick={onRestartGame}
+            name="reset"
           >
             {isGameFinished ? 'Play Again' : 'Restart'}
           </ActionButton>

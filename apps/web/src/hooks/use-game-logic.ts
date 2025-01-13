@@ -17,11 +17,22 @@ const initialResult = {
   errorMessage: '',
 };
 
+export interface GameLogic {
+  mode: GameMode;
+  setMode: React.Dispatch<React.SetStateAction<GameMode>>;
+  currentPlayer: GamePlayer;
+  result: GameResult;
+  board: string;
+  isGameFinished: boolean;
+  onPlayerPlay: (index: number) => void;
+  onRestartGame: () => void;
+}
+
 const replaceAt = (str: string, index: number, replacement: string) => {
   return str.substring(0, index) + replacement + str.substring(index + 1);
 };
 
-export const useGameLogic = () => {
+export const useGameLogic = (): GameLogic => {
   const [mode, setMode] = useState<GameMode>(GameMode.MULTI);
 
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(initialPlayer);

@@ -11,7 +11,8 @@ const playGame = (clicks: Clickable[]): string | undefined => {
   render(<GamePage />);
 
   for (const click of clicks) {
-    const testId = click === 'reset' ? testIdActionButton : testIdCell(click);
+    const testId =
+      click === 'reset' ? testIdActionButton('reset') : testIdCell(click);
     fireEvent.click(screen.getByTestId(testId));
   }
 
