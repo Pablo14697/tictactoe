@@ -9,7 +9,7 @@ import { SquareButton } from '@shared/square-button.component';
 import { checkGameResult } from '@utils/game.util';
 import { useState } from 'react';
 
-const INITIAL_BOARD = '_________';
+const initialBoard = '_________';
 
 const replaceAt = (str: string, index: number, replacement: string) => {
   return str.substring(0, index) + replacement + str.substring(index + 1);
@@ -22,7 +22,7 @@ export const GamePage: React.FC = () => {
     winningPositions: [],
     errorMessage: '',
   });
-  const [board, setBoard] = useState(INITIAL_BOARD);
+  const [board, setBoard] = useState(initialBoard);
 
   const isGameFinished =
     result.outcome !== GameOutcome.UNRESOLVED &&
@@ -61,7 +61,7 @@ export const GamePage: React.FC = () => {
   };
 
   const onRestartGame = () => {
-    setBoard(INITIAL_BOARD);
+    setBoard(initialBoard);
     setCurrentPlayer(GamePlayer.X);
     setResult({
       outcome: GameOutcome.UNRESOLVED,
