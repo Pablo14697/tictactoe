@@ -1,6 +1,6 @@
 import { GameOutcome, GamePlayer } from '@customTypes/game.types';
+import { getResultText } from '@utils/get-game-result.util';
 import { describe, expect, it } from 'vitest';
-import { getResultText } from './get-game-result.util';
 
 describe('getResultText', () => {
   it('should return an error message when the outcome is ERROR', () => {

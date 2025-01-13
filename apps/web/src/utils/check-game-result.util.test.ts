@@ -1,6 +1,6 @@
 import { GameOutcome, type GameResult } from '@customTypes/game.types';
+import { checkGameResult } from '@utils/check-game-result.util';
 import { describe, expect, it } from 'vitest';
-import { checkGameResult } from './check-game-result.util';
 
 /*
 

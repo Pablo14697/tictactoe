@@ -1,7 +1,7 @@
 import { testIdActionButton, testIdCell, testIdGameStatus } from '@constants';
+import { GamePage } from '@pages/game/game.page';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { GamePage } from './game.page';
 
 type CellIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type ResetButton = 'reset';
