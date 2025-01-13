@@ -1,2 +1,25 @@
-export type GameOutcome = GamePlayer | 'draw' | 'unresolved';
-export type GamePlayer = 'X' | 'O';
+export enum GameMode {
+  MULTI = 'Multi',
+  SINGLE = 'Single',
+}
+
+export enum GamePlayer {
+  X = 'X',
+  O = 'O',
+}
+
+export enum GameOutcome {
+  X = 'X',
+  O = 'O',
+  DRAW = 'draw',
+  UNRESOLVED = 'unresolved',
+  ERROR = 'error',
+}
+
+export type WinningCombination = number[];
+
+export interface GameResult {
+  outcome: GameOutcome;
+  winningPositions: WinningCombination;
+  errorMessage: string;
+}

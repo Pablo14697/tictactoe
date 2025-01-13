@@ -25,6 +25,8 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, './src/components/pages'),
       '@shared': path.resolve(__dirname, './src/components/shared'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@customTypes': path.resolve(__dirname, './src/types'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
     },
   },
   server: { port: Number(process.env.PORT ?? 3000) },
