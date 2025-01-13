@@ -14,10 +14,10 @@
     "noEmit": true,
     "paths": {
       "@constants": ["./constants.ts"],
+      "@customTypes/*": ["./types/*"],
       "@pages/*": ["./components/pages/*"],
       "@shared/*": ["./components/shared/*"],
-      "@utils/*": ["./utils/*"],
-      "@customTypes/*": ["./types/*"]
+      "@utils/*": ["./utils/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

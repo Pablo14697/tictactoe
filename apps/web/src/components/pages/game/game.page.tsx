@@ -59,16 +59,16 @@ export const GamePage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen w-screen justify-center">
-      <div className="bg-white overflow-y-scroll no-scrollbar">
-        <div className="flex flex-col items-center px-[52px] bg-white">
+      <div className="no-scrollbar·overflow-y-scroll·bg-white">
+        <div className="flex·flex-col·items-center·bg-white·px-[52px]">
           <div className="mt-[40px]" />
-          <h1 className="font-bold text-[50px] leading-[60.51px] whitespace-nowrap">
+          <h1 className="whitespace-nowrap·font-bold·text-[50px]·leading-[60.51px]">
             TIC-TAC-TOE
           </h1>
           <div className="mb-[50px]" />
 
           <h3
-            className="text-[32px] leading-[38.73px] whitespace-nowrap"
+            className="whitespace-nowrap·text-[32px]·leading-[38.73px]"
             data-testid={testIdGameStatus}
           >
             {getResultText()}
