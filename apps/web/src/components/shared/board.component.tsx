@@ -21,13 +21,11 @@ export const Board = ({
         key={String(index) + Date.now()}
         data-testid={testIdCell(index)}
         disabled={isGameFinished}
-        className={`
-                  ${row === emptyGame || isGameFinished ? ' bg-white' : 'bg-custom-green-muted'}
-                  ${
-                    result.winningPositions?.includes(index)
-                      ? 'text-custom-green'
-                      : 'text-black'
-                  }`}
+        className={`${row === emptyGame || isGameFinished ? ' bg-white' : 'bg-custom-green-muted'} ${
+          result.winningPositions?.includes(index)
+            ? 'text-custom-green'
+            : 'text-black'
+        }`}
         onClick={() => onClickCell(index)}
       >
         {row === emptyGame ? '' : row}
