@@ -18,7 +18,11 @@ const getWinningCombination = (
 ): number[] => {
   for (const combination of winningCombinations) {
     const [a, b, c] = combination;
-    if (board[a] !== '_' && board[a] === board[b] && board[a] === board[c]) {
+    if (
+      board[a] !== emptyGame &&
+      board[a] === board[b] &&
+      board[a] === board[c]
+    ) {
       return combination;
     }
   }
