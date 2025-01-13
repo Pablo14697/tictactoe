@@ -8,7 +8,7 @@ export const SquareButton: React.FC<SquareButtonProps> = (props) => {
   return (
     <button
       {...buttonProps}
-      className={`flex items-center justify-center rounded-[8px] px-[32px] py-[12px] font-bold text-[50px] leading-[38.73px] ${
+      className={`flex items-center justify-center rounded-[8px] px-[32px] py-[12px] font-bold text-[50px] leading-[38.73px] hover:bg-custom-green-muted ${
         isSquareSet && !disabled ? 'bg-custom-green-muted' : ' bg-white'
       } ${className}`}
       disabled={disabled || isSquareSet}

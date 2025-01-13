@@ -83,7 +83,7 @@ export const GamePage: React.FC = () => {
 
           <div className="w-board">
             <h3
-              className="whitespace-pre-wrap text-[32px] leading-[38.73px] text-center"
+              className="whitespace-pre-wrap text-center text-[32px] leading-[38.73px]"
               data-testid={testIdGameStatus}
             >
               {getResultText()}
