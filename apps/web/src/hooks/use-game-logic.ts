@@ -6,6 +6,7 @@ import {
   type GameResult,
 } from '@customTypes/game.types';
 import { checkGameResult } from '@utils/check-game-result.util';
+import { generateCpuPlay } from '@utils/generate-cpu-play.util';
 import { useState } from 'react';
 
 const initialBoard = '_'.repeat(9);
@@ -21,7 +22,8 @@ const replaceAt = (str: string, index: number, replacement: string) => {
 };
 
 export const useGameLogic = () => {
-  const [mode] = useState<GameMode>(GameMode.MULTI);
+  const [mode, setMode] = useState<GameMode>(GameMode.MULTI);
+
   const [currentPlayer, setCurrentPlayer] = useState<GamePlayer>(initialPlayer);
   const [result, setResult] = useState<GameResult>(initialResult);
   const [board, setBoard] = useState(initialBoard);
@@ -30,19 +32,24 @@ export const useGameLogic = () => {
     result.outcome !== GameOutcome.UNRESOLVED &&
     result.outcome !== GameOutcome.ERROR;
 
-  const handleMulti = (index: number) => {
-    if (board.charAt(index) !== emptyGame) {
-      return;
+  const playHuman = (index: number, player: GamePlayer) => {
+    return replaceAt(board, index, player);
+  };
+
+  const playCpu = (board: string) => {
+    const genericIndex = generateCpuPlay(board);
+
+    if (genericIndex !== -1) {
+      return replaceAt(board, genericIndex, GamePlayer.O);
     }
 
-    const updatedBoard = replaceAt(board, index, currentPlayer);
+    return board;
+  };
 
-    const result = checkGameResult(updatedBoard);
-    setBoard(updatedBoard);
+  const checkResult = (board: string) => {
+    const result = checkGameResult(board);
+    setBoard(board);
 
-    setCurrentPlayer(
-      currentPlayer === GamePlayer.X ? GamePlayer.O : GamePlayer.X,
-    );
     setResult({
       outcome: result.outcome,
       winningPositions: result.winningPositions,
@@ -50,11 +57,32 @@ export const useGameLogic = () => {
     });
   };
 
+  const handleCpuMode = async (index: number) => {
+    const boardUpdatedByHuman = playHuman(index, GamePlayer.X);
+    const boardUpdatedByCpu = playCpu(boardUpdatedByHuman);
+
+    checkResult(boardUpdatedByCpu);
+  };
+
+  const handleMultiMode = (index: number) => {
+    const boardUpdatedByHuman = playHuman(index, currentPlayer);
+
+    setCurrentPlayer(
+      currentPlayer === GamePlayer.X ? GamePlayer.O : GamePlayer.X,
+    );
+    checkResult(boardUpdatedByHuman);
+  };
+
   const modeHandlers = {
-    [GameMode.MULTI]: handleMulti,
+    [GameMode.MULTI]: handleMultiMode,
+    [GameMode.CPU]: handleCpuMode,
   };
 
   const onPlayerPlay = (index: number) => {
+    const isAFilledCell = board.charAt(index) !== emptyGame;
+    if (isAFilledCell) {
+      return;
+    }
     if (isGameFinished) return;
     const modeHandler = modeHandlers[mode];
     if (modeHandler) {
@@ -69,6 +97,8 @@ export const useGameLogic = () => {
   };
 
   return {
+    mode,
+    setMode,
     currentPlayer,
     result,
     board,

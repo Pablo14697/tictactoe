@@ -15,6 +15,21 @@ export default {
       height: {
         board: '310px',
       },
+      fontSize: {
+        base: '16px',
+        xl: '32px',
+        '2xl': '50px',
+      },
+      padding: {
+        13: '52px',
+      },
+      margin: {
+        12.5: '50px',
+        13: '52px',
+      },
+      borderRadius: {
+        2: '8px',
+      },
     },
   },
 };

@@ -9,7 +9,7 @@ export const ActionButton: React.FC<ActionButtonProps> = (props) => {
   return (
     <button
       {...buttonProps}
-      className={`whitespace-nowrap rounded-[8px] px-[32px] py-[12px] font-bold text-[32px] text-white leading-[38.73px] hover:opacity-80 ${className}`}
+      className={`whitespace-nowrap rounded-2 font-bold text-white leading-[38.73px] hover:opacity-80 ${className}`}
       data-testid={testIdActionButton}
       disabled={disabled}
     >
