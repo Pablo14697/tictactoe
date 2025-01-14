@@ -1,13 +1,6 @@
-import {
-  GameOutcome,
-  type GamePlayer,
-  type GameResult,
-} from '@customTypes/game.types';
+import { GameOutcome, type GameResult } from '@customTypes/game.types';
 
-export const getResultText = (
-  result: GameResult,
-  currentPlayer: GamePlayer,
-) => {
+export const getResultText = (result: GameResult) => {
   if (result.outcome === GameOutcome.ERROR) {
     return `Error: ${result.errorMessage}`;
   }
@@ -20,5 +13,5 @@ export const getResultText = (
     return "It's a Draw";
   }
 
-  return `Next Turn: ${currentPlayer}`;
+  return '';
 };

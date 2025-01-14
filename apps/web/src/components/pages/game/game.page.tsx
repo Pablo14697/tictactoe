@@ -59,7 +59,7 @@ export const GamePage: React.FC = () => {
               className="whitespace-pre-wrap text-center text-xl leading-[38.73px]"
               data-testid={testIdGameStatus}
             >
-              {getResultText(result, currentPlayer)}
+              {getResultText(result) || `Next Turn: ${currentPlayer}`}
             </h3>
           </div>
 
