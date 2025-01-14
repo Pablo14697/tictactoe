@@ -28,6 +28,7 @@ export default defineConfig({
       '@customTypes': path.resolve(__dirname, './src/types'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@store': path.resolve(__dirname, './src/store'),
+      '@context': path.resolve(__dirname, './src/context'),
     },
   },
   server: { port: Number(process.env.PORT ?? 3000) },

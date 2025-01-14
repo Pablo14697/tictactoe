@@ -1,5 +1,5 @@
 import type { GameHistoryPaginated } from '@customTypes/game.types';
-import { HistoryTable } from '@shared/history-table';
+import { HistoryTable } from '@shared/history-table.component';
 import { Link } from '@shared/link.component';
 import { Pagination } from '@shared/pagination.component';
 import { getPaginatedHistory } from '@store/history.store';
