@@ -37,8 +37,8 @@ export const storeHistory = ({
   localStorage.setItem(
     HISTORY_KEY,
     JSON.stringify([
-      ...history,
       { outcome: getResultText(result), id: Date.now(), gameMode: mode, size },
+      ...history,
     ] as GameHistory[]),
   );
 };
