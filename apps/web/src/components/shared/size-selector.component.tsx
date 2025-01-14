@@ -7,12 +7,12 @@ export const SizeSelector = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h3
+      <span
         className="whitespace-pre-wrap text-center text-base leading-[38.73px]"
         data-testid={testIdSizeStatus}
       >
         Matrix size: {size}
-      </h3>
+      </span>
       <div className="flex gap-2">
         <ActionButton
           className={'h-10 w-12 bg-custom-gray font-normal text-base'}

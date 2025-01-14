@@ -47,13 +47,13 @@ export const GamePage: React.FC = () => {
             <div className="mb-5" />
             <GameModeSelector />
             <div className="mb-5" />
-            <div className="w-board">
-              <h3
+            <div className="flex w-board justify-center">
+              <span
                 className="whitespace-pre-wrap text-center text-xl leading-[38.73px]"
                 data-testid={testIdGameStatus}
               >
                 {getResultText(result) || `Next Turn: ${currentPlayer}`}
-              </h3>
+              </span>
             </div>
 
             <div className="mb-10" />

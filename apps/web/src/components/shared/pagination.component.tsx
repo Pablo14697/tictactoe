@@ -11,6 +11,7 @@ export const Pagination = ({ page, onChangePage, total }: PaginationProps) => (
       className="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-gray-300 border-e-0 bg-white px-3"
       disabled={page < 2}
       onClick={() => onChangePage(page - 1)}
+      aria-label={'previous page button'}
     >
       Previous
     </button>
@@ -23,6 +24,7 @@ export const Pagination = ({ page, onChangePage, total }: PaginationProps) => (
       className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3"
       disabled={page + 1 > total}
       onClick={() => onChangePage(page + 1)}
+      aria-label={'next page button'}
     >
       Next
     </button>

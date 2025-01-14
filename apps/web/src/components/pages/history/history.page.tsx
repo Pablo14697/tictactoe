@@ -35,9 +35,9 @@ export const HistoryPage: React.FC = () => {
           {historyPaginated.history.length ? (
             <HistoryTable data={historyPaginated.history} />
           ) : (
-            <h3 className="text-center font-thin text-xl leading-[38.73px]">
+            <span className="text-center font-thin text-xl leading-[38.73px]">
               No games were played
-            </h3>
+            </span>
           )}
           <div className="mb-6" />
           <Pagination
