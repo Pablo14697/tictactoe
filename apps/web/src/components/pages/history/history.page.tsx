@@ -1,14 +1,25 @@
-import type { GameHistory } from '@customTypes/game.types';
+import type { GameHistoryPaginated } from '@customTypes/game.types';
 import { Link } from '@shared/link.component';
-import { getHistory } from '@store/history.store';
+import { getPaginatedHistory } from '@store/history.store';
 import { useEffect, useState } from 'react';
 
 export const HistoryPage: React.FC = () => {
-  const [history, setHistory] = useState<GameHistory[]>([]);
+  const [historyPaginated, setHistory] = useState<GameHistoryPaginated>({
+    history: [],
+    totalPages: 0,
+  });
+  const [page, setPage] = useState(1);
+
   useEffect(() => {
-    const history = getHistory();
-    setHistory(history);
+    const paginatedHistory = getPaginatedHistory(1);
+    setHistory(paginatedHistory);
   }, []);
+
+  const onChangePage = (page: number) => {
+    const paginatedHistory = getPaginatedHistory(page);
+    setHistory(paginatedHistory);
+    setPage(page);
+  };
 
   return (
     <div className="flex min-h-screen w-screen justify-center">
@@ -19,7 +30,7 @@ export const HistoryPage: React.FC = () => {
             TIC-TAC-TOE
           </h1>
           <div className="mb-3" />
-          {history.length ? (
+          {historyPaginated.history.length ? (
             <div className="no-scrollbar flex h-full w-full flex-col overflow-scroll rounded-lg bg-white shadow-md ">
               <table className="w-full min-w-max table-auto text-left">
                 <thead>
@@ -28,12 +39,15 @@ export const HistoryPage: React.FC = () => {
                       <p className="font-normal text-sm leading-none">Mode</p>
                     </th>
                     <th className="p-4">
+                      <p className="font-normal text-sm leading-none">Size</p>
+                    </th>
+                    <th className="p-4">
                       <p className="font-normal text-sm leading-none">Result</p>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((item) => (
+                  {historyPaginated.history.map((item) => (
                     <tr
                       className="hover:bg-custom-green-muted-33"
                       key={item.id}
@@ -41,6 +55,11 @@ export const HistoryPage: React.FC = () => {
                       <td className="p-4">
                         <p className="font-bold text-sm capitalize">
                           {item.gameMode}
+                        </p>
+                      </td>
+                      <td className="p-4">
+                        <p className="font-bold text-sm">
+                          {item.size}x{item.size}
                         </p>
                       </td>
                       <td className="p-4">
@@ -57,9 +76,30 @@ export const HistoryPage: React.FC = () => {
             </h3>
           )}
           <div className="mb-6" />
-          {
-            // here I could add a pagination
-          }
+          <div className="inline-flex text-sm">
+            <button
+              type="button"
+              className="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-gray-300 border-e-0 bg-white px-3"
+              disabled={page < 2}
+              onClick={() => onChangePage(page - 1)}
+            >
+              Previous
+            </button>
+            <span className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3">
+              {page}
+            </span>
+
+            <button
+              type="button"
+              className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3"
+              disabled={page + 1 > historyPaginated.totalPages}
+              onClick={() => onChangePage(page + 1)}
+            >
+              Next
+            </button>
+          </div>
+          <div className="mb-2" />
+
           <Link variant="sm" to="/">
             Go back
           </Link>

@@ -1,4 +1,4 @@
-import { GameOutcome, GamePlayer } from '@customTypes/game.types';
+import { GameOutcome } from '@customTypes/game.types';
 import { getResultText } from '@utils/get-game-result.util';
 import { describe, expect, it } from 'vitest';
 
@@ -9,9 +9,8 @@ describe('getResultText', () => {
       errorMessage: 'error message',
       winningPositions: [],
     };
-    const currentPlayer = GamePlayer.X;
 
-    const output = getResultText(result, currentPlayer);
+    const output = getResultText(result);
 
     expect(output).toBe(`Error: ${result.errorMessage}`);
   });
@@ -22,9 +21,8 @@ describe('getResultText', () => {
       errorMessage: '',
       winningPositions: [],
     };
-    const currentPlayer = GamePlayer.O;
 
-    const output = getResultText(result, currentPlayer);
+    const output = getResultText(result);
 
     expect(output).toBe('Winner: X');
   });
@@ -35,9 +33,8 @@ describe('getResultText', () => {
       errorMessage: '',
       winningPositions: [],
     };
-    const currentPlayer = GamePlayer.X;
 
-    const output = getResultText(result, currentPlayer);
+    const output = getResultText(result);
 
     expect(output).toBe('Winner: O');
   });
@@ -48,23 +45,21 @@ describe('getResultText', () => {
       errorMessage: '',
       winningPositions: [],
     };
-    const currentPlayer = GamePlayer.X;
 
-    const output = getResultText(result, currentPlayer);
+    const output = getResultText(result);
 
     expect(output).toBe("It's a Draw");
   });
 
-  it('should return the next turn when the outcome is not ERROR, X, O, or DRAW', () => {
+  it('should return the empty string when the outcome is not ERROR, X, O, or DRAW', () => {
     const result = {
       outcome: GameOutcome.UNRESOLVED,
       errorMessage: '',
       winningPositions: [],
     };
-    const currentPlayer = GamePlayer.O;
 
-    const output = getResultText(result, currentPlayer);
+    const output = getResultText(result);
 
-    expect(output).toBe('Next Turn: O');
+    expect(output).toBe('');
   });
 });

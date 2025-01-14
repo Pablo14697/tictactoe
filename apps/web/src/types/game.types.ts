@@ -28,4 +28,10 @@ export interface GameHistory {
   outcome: GameOutcome;
   id: string;
   gameMode: GameMode;
+  size: number;
+}
+
+export interface GameHistoryPaginated {
+  history: GameHistory[];
+  totalPages: number;
 }

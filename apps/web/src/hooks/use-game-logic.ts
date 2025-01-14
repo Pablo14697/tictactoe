@@ -67,7 +67,7 @@ export const useGameLogic = (): GameLogic => {
     setResult(result);
 
     if (isGameFinished(result)) {
-      storeHistory(result, mode);
+      storeHistory({ result, mode, size });
     }
 
     return result;
