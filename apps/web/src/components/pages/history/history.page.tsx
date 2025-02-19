@@ -2,20 +2,17 @@ import type { GameHistoryPaginated } from '@customTypes/game.types';
 import { HistoryTable } from '@shared/history-table.component';
 import { Link } from '@shared/link.component';
 import { Pagination } from '@shared/pagination.component';
-import { getPaginatedHistory } from '@store/history.store';
+import {
+  getPaginatedHistory,
+  initializePaginatedHistory,
+} from '@store/history.store';
 import { useEffect, useState } from 'react';
 
 export const HistoryPage: React.FC = () => {
-  const [historyPaginated, setHistory] = useState<GameHistoryPaginated>({
-    history: [],
-    totalPages: 0,
-  });
+  const [historyPaginated, setHistory] = useState<GameHistoryPaginated>(
+    initializePaginatedHistory,
+  );
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    const paginatedHistory = getPaginatedHistory(1);
-    setHistory(paginatedHistory);
-  }, []);
 
   const onChangePage = (page: number) => {
     const paginatedHistory = getPaginatedHistory(page);

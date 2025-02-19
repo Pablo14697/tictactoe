@@ -42,3 +42,8 @@ export const storeHistory = ({
     ] as GameHistory[]),
   );
 };
+
+export const initializePaginatedHistory = getPaginatedHistory(1) || {
+  history: [],
+  totalPages: 0,
+};

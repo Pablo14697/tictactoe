@@ -6,11 +6,6 @@ import svgr from 'vite-plugin-svgr';
 // https://vitejs.dev/config/
 //
 export default defineConfig({
-  // GitHub pages will create a route with your repository name in it, for
-  //   example: https://squaduplabs.github.io/tictactoe-template, or
-  //   https://squaduplabs.github.io/tictactoe-NoahYB, so we need to configure
-  //   that here so the app will render correctly at that route if using it
-  //
   base: process.env.GITHUB_PAGES_BASE ?? '/',
   build: { commonjsOptions: { include: [/node_modules/] } },
   define: {
