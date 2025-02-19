@@ -6,7 +6,7 @@ import {
   getPaginatedHistory,
   initializePaginatedHistory,
 } from '@store/history.store';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export const HistoryPage: React.FC = () => {
   const [historyPaginated, setHistory] = useState<GameHistoryPaginated>(
